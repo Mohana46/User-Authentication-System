@@ -1,3 +1,47 @@
-spring:
-  application:
-    name: demo
+
+	server:
+	  port: 8080
+
+	spring:
+	  application:
+	    name: auth-system
+
+	  profiles:
+	    active: dev
+
+	jwt:
+	  access-expiration: 900000        # 15 min
+	  refresh-expiration: 604800000    # 7 days
+
+	# Resilience4j Configuration
+	resilience4j:
+	  circuitbreaker:
+	    instances:
+	      emailService:
+	        registerHealthIndicator: true
+	        slidingWindowSize: 10
+	        failureRateThreshold: 50
+	        waitDurationInOpenState: 10s
+	        permittedNumberOfCallsInHalfOpenState: 3
+
+	  retry:
+	    instances:
+	      emailService:
+	        maxAttempts: 3
+	        waitDuration: 2s
+
+	# Logging Configuration
+	logging:
+	  level:
+	    root: INFO
+	    org.springframework.security: DEBUG
+	    com.example.authsystem: DEBUG
+	  pattern:
+	    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+	# Swagger / OpenAPI
+	springdoc:
+	  api-docs:
+	    path: /api-docs
+	  swagger-ui:
+	    path: /swagger-ui.html
