@@ -1,5 +1,6 @@
 package com.authentication.entity;
 
 public enum Role {
+	USER
 
 }

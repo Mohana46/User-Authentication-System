@@ -1,11 +1,14 @@
 package com.authentication.dto.request;
 
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
+@Getter
 public class RegisterRequest {
 
     @NotBlank
@@ -21,4 +24,7 @@ public class RegisterRequest {
 
     @NotBlank
     private String password;
+    
+    @Transient
+    private String confirmPassword;
 }
