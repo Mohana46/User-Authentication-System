@@ -4,6 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.authentication.dto.request.LoginRequest;
+import com.authentication.dto.request.RefreshTokenRequest;
 import com.authentication.dto.request.RegisterRequest;
 import com.authentication.dto.response.AuthResponse;
 import com.authentication.dto.response.RegisterResponse;
@@ -127,6 +128,37 @@ public class AuthServiceImpl implements AuthService {
 	    return new AuthResponse(
 	            accessToken,
 	            refreshToken,
+	            user.getEmail(),
+	            user.getRole().name(),
+	            expiresIn
+	    );
+	}
+	
+	@Override
+	public AuthResponse refreshToken(RefreshTokenRequest request) {
+
+	    String refreshToken = request.getRefreshToken();
+
+	    
+	    if (!jwtUtil.isTokenValid(refreshToken)) {
+	        throw new RuntimeException("Invalid or expired refresh token");
+	    }
+
+	    
+	    String email = jwtUtil.extractEmail(refreshToken);
+
+	    User user = userRepo.findByEmail(email)
+	            .orElseThrow(() -> new RuntimeException("User not found"));
+
+	    
+	    String newAccessToken = jwtUtil.generateAccessToken(email);
+	    String newRefreshToken = jwtUtil.generateRefreshToken(email);
+
+	    long expiresIn = 900; 
+
+	    return new AuthResponse(
+	            newAccessToken,
+	            newRefreshToken,
 	            user.getEmail(),
 	            user.getRole().name(),
 	            expiresIn
