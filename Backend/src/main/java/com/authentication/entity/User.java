@@ -1,20 +1,14 @@
 package com.authentication.entity;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -55,16 +49,9 @@ public class User {
 	@Column(nullable = false)
 	private AuthProvider provider;
 
-//	@ManyToMany(fetch = FetchType.LAZY)
-//	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-//	private Set<Role> roles = new HashSet<>();
-	
-	@ElementCollection(fetch = FetchType.EAGER)
 	@Enumerated(EnumType.STRING)
-	@CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-	@Column(name = "role")
-	private Set<Role> roles = new HashSet<>();
-	
+	@Column(nullable = false)
+	private Role role;
 	
 	@Column(nullable = false, updatable = false)
 	private LocalDateTime createdAt;
