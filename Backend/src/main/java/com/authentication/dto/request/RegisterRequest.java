@@ -22,7 +22,11 @@ public class RegisterRequest {
     @NotBlank
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Password is required")
+    @Pattern(
+        regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).{8,}$",
+        message = "Password must be 8+ chars, include uppercase, lowercase, number and special character"
+    )
     private String password;
     
     @Transient
